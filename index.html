@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IIT Bhilai Senior Survey 2025–26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0f1e;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --accent5: #f472b6;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --heading: #f8fafc;
+    --mono: 'Space Mono', monospace;
+    --body: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── Noise overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(56,189,248,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(129,140,248,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 40% at 80% 70%, rgba(52,211,153,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(56,189,248,0.3);
+    padding: 0.3rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    background: rgba(56,189,248,0.05);
+  }
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--heading);
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin-bottom: 3rem;
+    max-width: 480px;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    max-width: 700px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.2rem 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .stat-card .num {
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-card .label { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; }
+
+  /* ── Nav ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,15,30,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 0; justify-content: center;
+    padding: 0 1rem;
+    overflow-x: auto;
+  }
+  nav a {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 1rem 1.1rem;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  nav a:hover, nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── Sections ── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .section-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .section-title {
+    font-family: var(--mono);
+    font-size: 1.3rem;
+    color: var(--heading);
+    letter-spacing: -0.02em;
+  }
+  .section-desc { color: var(--muted); font-size: 0.9rem; margin-top: 0.2rem; }
+
+  /* ── Grid layouts ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+  @media(max-width:900px) { .grid-2,.grid-3 { grid-template-columns:1fr; } }
+
+  /* ── Chart card ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(56,189,248,0.3); }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card:hover::before { opacity: 1; }
+  .card.span2 { grid-column: span 2; }
+  @media(max-width:900px) { .card.span2 { grid-column: span 1; } }
+  .card-title {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  .card-title span {
+    font-size: 0.72rem;
+    background: rgba(56,189,248,0.1);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 0.1rem 0.4rem;
+    margin-left: 0.5rem;
+  }
+  .chart-wrap { position: relative; height: 260px; }
+  .chart-wrap.tall { height: 320px; }
+  .chart-wrap.short { height: 200px; }
+
+  /* ── Insight callout ── */
+  .insight {
+    background: rgba(56,189,248,0.05);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text);
+    margin-top: 1rem;
+  }
+  .insight strong { color: var(--accent); }
+
+  /* ── Divider ── */
+  .section-divider {
+    border: none; border-top: 1px solid var(--border);
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  /* ── Stat row ── */
+  .stat-row {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .mini-stat {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.8rem 1.2rem;
+    flex: 1; min-width: 120px;
+  }
+  .mini-stat .val {
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    color: var(--accent3);
+  }
+  .mini-stat .lbl { font-size: 0.78rem; color: var(--muted); }
+
+  /* ── Word cloud ── */
+  #wordcloud-canvas { width: 100%; height: 280px; }
+
+  /* ── Radar legend ── */
+  .radar-legend {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: 1rem; justify-content: center;
+  }
+  .radar-legend span {
+    font-size: 0.78rem; color: var(--muted);
+    background: var(--surface2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  /* ── Progress bars ── */
+  .bar-list { display: flex; flex-direction: column; gap: 0.7rem; }
+  .bar-item { }
+  .bar-label { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text); margin-bottom: 0.3rem; }
+  .bar-track { background: var(--surface2); border-radius: 100px; height: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 100px; transition: width 1s ease; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 3rem 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-family: var(--mono);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-tag">IIT Bhilai · Class of 2025–26</div>
+  <h1>The <span>Senior Survey</span><br>Dashboard</h1>
+  <p class="hero-sub">What did four years at IIT Bhilai actually look like? Academics, lifestyle, careers, and everything in between.</p>
+  <div class="hero-stats" id="hero-stats">
+    <div class="stat-card"><div class="num" id="n-total">97</div><div class="label">Respondents</div></div>
+    <div class="stat-card"><div class="num" id="n-dept">11</div><div class="label">Departments</div></div>
+    <div class="stat-card"><div class="num" id="n-pgpct">61%</div><div class="label">Heading to Jobs</div></div>
+    <div class="stat-card"><div class="num" id="n-cgpa">8–9</div><div class="label">Most Common CGPA</div></div>
+    <div class="stat-card"><div class="num" id="n-alc">55%</div><div class="label">Never Drank</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav id="mainnav">
+  <a href="#demographics">Demographics</a>
+  <a href="#academics">Academics</a>
+  <a href="#career">Career</a>
+  <a href="#lifestyle">Lifestyle</a>
+  <a href="#campus">Campus</a>
+  <a href="#wordcloud">Words</a>
+</nav>
+
+<!-- ═══════════════ DEMOGRAPHICS ═══════════════ -->
+<section class="section" id="demographics">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(56,189,248,0.1);">🌏</div>
+    <div>
+      <div class="section-title">Demographics</div>
+      <div class="section-desc">Who are the respondents? Gender, background, region, and more.</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Department Distribution <span>n=97</span></div>
+      <div class="chart-wrap tall"><canvas id="chart-dept"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Region of Upbringing</div>
+      <div class="chart-wrap"><canvas id="chart-region"></canvas></div>
+      <div class="insight"><strong>Diverse origins:</strong> Respondents come from every tier — rural to metro — with Tier-2 cities the most common.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Dietary Preferences</div>
+      <div class="chart-wrap short"><canvas id="chart-diet"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Parents' Education</div>
+      <div class="chart-wrap short"><canvas id="chart-parent-edu"></canvas></div>
+      <div class="insight"><strong>60%</strong> have at least one parent who graduated college — a first-gen population of ~10%.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════ ACADEMICS ═══════════════ -->
+<section class="section" id="academics">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(129,140,248,0.1);">📚</div>
+    <div>
+      <div class="section-title">Academics</div>
+      <div class="section-desc">CGPA, study habits, honor code, and elective satisfaction.</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="mini-stat"><div class="val">3.46/5</div><div class="lbl">Avg CGPA Satisfaction</div></div>
+    <div class="mini-stat"><div class="val">2.61/5</div><div class="lbl">Avg Elective Satisfaction</div></div>
+    <div class="mini-stat"><div class="val">2.94/5</div><div class="lbl">Avg Class Importance</div></div>
+    <div class="mini-stat"><div class="val">47%</div><div class="lbl">Saw Honor Code Violation</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Final CGPA Distribution</div>
+      <div class="chart-wrap"><canvas id="chart-cgpa"></canvas></div>
+      <div class="insight"><strong>47%</strong> graduated with a CGPA between 8–9. Only 2 respondents below 6.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">CGPA Satisfaction (1–5)</div>
+      <div class="chart-wrap"><canvas id="chart-cgpa-sat"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Study Schedule Style</div>
+      <div class="chart-wrap"><canvas id="chart-study"></canvas></div>
+      <div class="insight"><strong>69%</strong> studied mostly before exams — the classic IIT approach.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Extra Coursework (Minor/Honors)</div>
+      <div class="chart-wrap"><canvas id="chart-extra-course"></canvas></div>
+    </div>
+    <div class="card span2">
+      <div class="card-title">Academic Honor Code Violations Witnessed</div>
+      <div class="chart-wrap short"><canvas id="chart-honor"></canvas></div>
+      <div class="insight"><strong>52%</strong> witnessed a violation but didn't report it — a culture of silent non-compliance.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════ CAREER ═══════════════ -->
+<section class="section" id="career">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(52,211,153,0.1);">💼</div>
+    <div>
+      <div class="section-title">Career & Future</div>
+      <div class="section-desc">Post-grad plans, job factors, internship impact, and income expectations.</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="mini-stat"><div class="val">2.97/5</div><div class="lbl">Prepared for Life</div></div>
+    <div class="mini-stat"><div class="val">3.37/5</div><div class="lbl">Intern Helpfulness</div></div>
+    <div class="mini-stat"><div class="val">3.07/5</div><div class="lbl">IIT Brand Help</div></div>
+    <div class="mini-stat"><div class="val">44%</div><div class="lbl">Strongly/Yes — Core Career</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Immediate Plans After Graduation</div>
+      <div class="chart-wrap tall"><canvas id="chart-postgrad"></canvas></div>
+      <div class="insight"><strong>61%</strong> heading to jobs. Only 12% for higher studies — lower than typical IIT averages.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Income vs Batchmates Expectation</div>
+      <div class="chart-wrap tall"><canvas id="chart-income"></canvas></div>
+    </div>
+    <div class="card span2">
+      <div class="card-title">Job Factor Importance (avg rating out of 5)</div>
+      <div class="chart-wrap short"><canvas id="chart-job-factors"></canvas></div>
+      <div class="insight"><strong>Salary (4.11)</strong> and <strong>Work Culture (4.02)</strong> rated highest — interest alignment follows at 3.87.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Interest in Core Branch Career</div>
+      <div class="chart-wrap"><canvas id="chart-core-career"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">CGPA vs Post-Grad Plans</div>
+      <div class="chart-wrap"><canvas id="chart-cgpa-vs-pg"></canvas></div>
+      <div class="insight">Higher CGPA respondents lean slightly more towards Higher Studies.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════ LIFESTYLE ═══════════════ -->
+<section class="section" id="lifestyle">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(251,146,60,0.1);">🌙</div>
+    <div>
+      <div class="section-title">Lifestyle & Social</div>
+      <div class="section-desc">Sleep, alcohol, relationships, friendships, and daily habits.</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="mini-stat"><div class="val">15.9/21</div><div class="lbl">Avg Mess Meals/Week</div></div>
+    <div class="mini-stat"><div class="val">55%</div><div class="lbl">Never Drank Alcohol</div></div>
+    <div class="mini-stat"><div class="val">75%</div><div class="lbl">Never Smoked</div></div>
+    <div class="mini-stat"><div class="val">3.58/5</div><div class="lbl">Family Closeness</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Sleep Per Night</div>
+      <div class="chart-wrap"><canvas id="chart-sleep"></canvas></div>
+      <div class="insight"><strong>80%</strong> sleep 5–8 hours. Only 5% report over 8 hours of sleep.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Alcohol — When First Consumed</div>
+      <div class="chart-wrap"><canvas id="chart-alc-start"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Alcohol Frequency (Current)</div>
+      <div class="chart-wrap short"><canvas id="chart-alc-freq"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">How Friendships Changed</div>
+      <div class="chart-wrap short"><canvas id="chart-friendship"></canvas></div>
+      <div class="insight"><strong>47%</strong> say friendships became much stronger over 4 years.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">How Often Did You Go Home?</div>
+      <div class="chart-wrap short"><canvas id="chart-go-home"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Where Did You Eat Outside Mess?</div>
+      <div class="chart-wrap short"><canvas id="chart-eat-outside"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Dating App Usage</div>
+      <div class="chart-wrap short"><canvas id="chart-dating"></canvas></div>
+      <div class="insight"><strong>68%</strong> never used a dating app during their stay at IIT Bhilai.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Sexual Orientation</div>
+      <div class="chart-wrap short"><canvas id="chart-orientation"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════ CAMPUS ═══════════════ -->
+<section class="section" id="campus">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(244,114,182,0.1);">🏛️</div>
+    <div>
+      <div class="section-title">Campus & Institute</div>
+      <div class="section-desc">Infrastructure, satisfaction, and being at a newer IIT.</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="mini-stat"><div class="val">3.0/5</div><div class="lbl">Infra Rating</div></div>
+    <div class="mini-stat"><div class="val">3.07/5</div><div class="lbl">Roommate Closeness</div></div>
+    <div class="mini-stat"><div class="val">3.11/5</div><div class="lbl">Religiousness</div></div>
+    <div class="mini-stat"><div class="val">1.26/5</div><div class="lbl">Prior IIT Bh Awareness</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Campus Infrastructure Rating (1–5)</div>
+      <div class="chart-wrap"><canvas id="chart-infra"></canvas></div>
+      <div class="insight">Exactly <strong>average (3.0)</strong> — students see improvement but expect more.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Overall Satisfaction Radar</div>
+      <div class="chart-wrap"><canvas id="chart-radar"></canvas></div>
+      <div class="radar-legend">
+        <span>CGPA 3.46</span><span>Electives 2.61</span><span>Life Ready 2.97</span>
+        <span>Infra 3.0</span><span>Brand 3.07</span><span>Internship 3.37</span>
+      </div>
+    </div>
+    <div class="card span2">
+      <div class="card-title">Infrastructure Rating Distribution</div>
+      <div id="infra-bar-list" class="bar-list"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════ WORD CLOUD ═══════════════ -->
+<section class="section" id="wordcloud">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(129,140,248,0.1);">💬</div>
+    <div>
+      <div class="section-title">IIT Bhilai in One Word</div>
+      <div class="section-desc">What the class of 2026 called their four years.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Word Cloud — 97 Responses</div>
+    <canvas id="wordcloud-canvas" height="300"></canvas>
+    <div class="insight">Top words: <strong>"Growing"</strong> (14), <strong>"Unpredictable"</strong> (13), <strong>"Challenging"</strong> (9), <strong>"Peaceful"</strong> (7), <strong>"Dynamic"</strong> (7).</div>
+  </div>
+</section>
+
+<footer>
+  <p>IIT Bhilai Senior Survey 2025–26 &nbsp;·&nbsp; Data Analytics & Visualization Course</p>
+  <p style="margin-top:0.4rem;">B24DS029 &nbsp;·&nbsp; <a href="https://github.com/B24DS029" target="_blank">GitHub ↗</a></p>
+</footer>
+
+<script>
+// ═══════════════ DATA ═══════════════
+const D = {
+  "meta": {"n": 97, "year": "2025-26", "institute": "IIT Bhilai"},
+  "dept": {"Electrical Engineering": 20,"Computer Science and Engineering": 20,"Data Science and Artificial Intelligence": 16,"Mechanical Engineering": 16,"Mechatronics Engineering": 9,"Chemistry": 5,"Materials Science and Metallurgical Engineering": 5,"Physics": 3,"Mathematics": 1,"Other": 1,"ECE": 1},
+  "gender": {"Male": 82,"Female": 15},
+  "region": {"Tier-2 city": 29,"Tier-3 city": 21,"Tier-1 city": 18,"Rural area": 18,"Metropolitan city": 11},
+  "diet": {"Vegetarian": 37,"Always Non-vegetarian": 37,"Eggetarian": 19,"Became Non-veg in IIT": 4},
+  "parent_edu": {"Both parents graduated": 58,"One parent graduated": 25,"Neither parent graduated": 10,"Prefer not to say": 4},
+  "cgpa_bucket": {"Below 6": 2,"6-7": 14,"7-8": 20,"8-9": 46,"9-10": 15},
+  "cgpa_sat_dist": {"1": 8,"2": 14,"3": 21,"4": 33,"5": 21},
+  "study_sched": {"Mostly before exams": 67,"Consistent daily study": 18,"Weekend heavy": 5,"Never studied": 3,"Self study focused": 2,"Other": 1,"Group study": 1},
+  "honor_code": {"Witnessed but didn't report": 50,"No violation seen": 27,"Never": 17,"Reported it": 3},
+  "extra_course": {"No": 48,"Minor": 28,"Extra electives": 10,"Honors": 10,"N/A": 1},
+  "post_grad": {"Job/Placement": 59,"Higher Studies": 12,"Competitive Exams": 9,"Entrepreneurship": 7,"Not decided": 4,"Figuring it out": 3,"Startup": 2,"Other": 1},
+  "income_expect": {"About average": 38,"Yes probably": 29,"Yes definitely": 15,"No probably not": 13,"No definitely not": 2},
+  "core_career": {"Yes strongly": 28,"Yes somewhat": 18,"No probably not": 17,"Yes definitely": 14,"No definitely not": 12,"Neutral": 5,"No not really": 3},
+  "alcohol_start": {"Never": 53,"2nd Year": 15,"Before College": 8,"1st Year": 7,"3rd Year": 7,"4th Year": 5,"After 3rd year": 2},
+  "alcohol_freq": {"Never": 56,"Occasionally": 16,"Regularly": 14,"Rarely": 11},
+  "sleep": {"Less than 5 hrs": 7,"5–7 hours": 46,"7–8 hours": 32,"More than 8 hrs": 12},
+  "friendship_change": {"Much stronger": 46,"Same": 23,"Changed entirely": 12,"Weaker": 7,"Drifted apart": 6,"Other": 3},
+  "go_home": {"Once": 46,"2-3 times": 32,"Never": 10,"3+ times": 5,"Every month": 4},
+  "eat_outside": {"Ordered online": 34,"Campus food outlets": 20,"Rarely ate outside": 16,"Eateries outside campus": 16,"Outlets outside campus": 8,"Other": 3},
+  "dating_apps": {"Never": 66,"Rarely": 21,"Occasionally": 5,"Frequently": 3,"Sometimes": 2},
+  "orientation": {"Heterosexual": 77,"Bisexual": 8,"Homosexual": 7,"Prefer not to say": 4,"Asexual": 1},
+  "infra_rating_dist": {"1": 16,"2": 16,"3": 28,"4": 26,"5": 11},
+  "satisfaction_summary": {"CGPA": 3.46,"Electives": 2.61,"Prepared for Life": 2.97,"Infrastructure": 3.0,"IIT Brand": 3.07,"Intern Help": 3.37},
+  "cgpa_vs_postgrad": {
+    "6-7": {"Job/Placement": 10,"Higher Studies": 0,"Competitive Exams": 2,"Entrepreneurship": 2,"Startup": 0},
+    "7-8": {"Job/Placement": 10,"Higher Studies": 4,"Competitive Exams": 0,"Entrepreneurship": 1,"Startup": 2},
+    "8-9": {"Job/Placement": 30,"Higher Studies": 5,"Competitive Exams": 4,"Entrepreneurship": 3,"Startup": 0},
+    "9-10": {"Job/Placement": 8,"Higher Studies": 3,"Competitive Exams": 2,"Entrepreneurship": 1,"Startup": 0}
+  },
+  "one_word": {"Growing": 14,"Unpredictable": 13,"Challenging": 9,"Peaceful": 7,"Dynamic": 7,"Unforgettable": 2,"Memories": 2,"Bad": 2,"Rollercoaster": 2,"Bittersweet": 1,"Amazing": 1,"Okish": 1,"Satisfactory": 1,"Disappointed": 1,"Transformative": 1,"Average": 1,"Isolated": 1,"Enjoyed": 1}
+};
+
+// ═══════════════ HELPERS ═══════════════
+const COLORS = [
+  '#38bdf8','#818cf8','#34d399','#fb923c','#f472b6',
+  '#a78bfa','#fbbf24','#60a5fa','#4ade80','#f87171',
+  '#e879f9','#2dd4bf'
+];
+const GRID_COLOR = 'rgba(255,255,255,0.05)';
+const TEXT_COLOR = '#94a3b8';
+
+const baseOpts = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      backgroundColor: '#1a2235',
+      borderColor: '#1e2d45',
+      borderWidth: 1,
+      titleColor: '#e2e8f0',
+      bodyColor: '#94a3b8',
+      padding: 10,
+    }
+  }
+};
+
+function hbar(ctx, labels, values, colors) {
+  return new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data: values, backgroundColor: colors || COLORS, borderRadius: 6, borderSkipped: false }]
+    },
+    options: {
+      ...baseOpts,
+      indexAxis: 'y',
+      scales: {
+        x: { grid: { color: GRID_COLOR }, ticks: { color: TEXT_COLOR }, border: { color: 'transparent' } },
+        y: { grid: { display: false }, ticks: { color: TEXT_COLOR }, border: { color: 'transparent' } }
+      }
+    }
+  });
+}
+
+function vbar(ctx, labels, values, colors) {
+  return new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data: values, backgroundColor: colors || COLORS, borderRadius: 6, borderSkipped: false }]
+    },
+    options: {
+      ...baseOpts,
+      scales: {
+        x: { grid: { display: false }, ticks: { color: TEXT_COLOR }, border: { color: 'transparent' } },
+        y: { grid: { color: GRID_COLOR }, ticks: { color: TEXT_COLOR }, border: { color: 'transparent' } }
+      }
+    }
+  });
+}
+
+function donut(ctx, labels, values, colors) {
+  return new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{ data: values, backgroundColor: colors || COLORS, borderWidth: 2, borderColor: '#111827', hoverOffset: 8 }]
+    },
+    options: {
+      ...baseOpts,
+      cutout: '60%',
+      plugins: { ...baseOpts.plugins, legend: { display: true, position: 'bottom', labels: { color: TEXT_COLOR, font: { size: 11 }, padding: 12, boxWidth: 12 } } }
+    }
+  });
+}
+
+function keys(obj) { return Object.keys(obj); }
+function vals(obj) { return Object.values(obj); }
+
+// ═══════════════ CHARTS ═══════════════
+
+// Dept
+hbar(document.getElementById('chart-dept').getContext('2d'),
+  keys(D.dept), vals(D.dept));
+
+// Region
+donut(document.getElementById('chart-region').getContext('2d'),
+  keys(D.region), vals(D.region));
+
+// Diet
+donut(document.getElementById('chart-diet').getContext('2d'),
+  keys(D.diet), vals(D.diet));
+
+// Parent edu
+donut(document.getElementById('chart-parent-edu').getContext('2d'),
+  keys(D.parent_edu), vals(D.parent_edu));
+
+// CGPA bucket
+vbar(document.getElementById('chart-cgpa').getContext('2d'),
+  keys(D.cgpa_bucket), vals(D.cgpa_bucket),
+  ['#475569','#60a5fa','#38bdf8','#818cf8','#a78bfa']);
+
+// CGPA satisfaction
+vbar(document.getElementById('chart-cgpa-sat').getContext('2d'),
+  ['1','2','3','4','5'], vals(D.cgpa_sat_dist),
+  ['#ef4444','#f97316','#eab308','#22c55e','#10b981']);
+
+// Study schedule
+hbar(document.getElementById('chart-study').getContext('2d'),
+  keys(D.study_sched), vals(D.study_sched));
+
+// Extra course
+donut(document.getElementById('chart-extra-course').getContext('2d'),
+  keys(D.extra_course), vals(D.extra_course));
+
+// Honor code
+hbar(document.getElementById('chart-honor').getContext('2d'),
+  keys(D.honor_code), vals(D.honor_code),
+  ['#f87171','#94a3b8','#60a5fa','#34d399']);
+
+// Post-grad
+donut(document.getElementById('chart-postgrad').getContext('2d'),
+  keys(D.post_grad), vals(D.post_grad));
+
+// Income expect
+hbar(document.getElementById('chart-income').getContext('2d'),
+  keys(D.income_expect), vals(D.income_expect),
+  ['#34d399','#38bdf8','#818cf8','#fb923c','#f87171']);
+
+// Job factors
+new Chart(document.getElementById('chart-job-factors').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['Interest/Skillset','Financial Comp.','Location','Work Culture'],
+    datasets: [{
+      data: [3.87, 4.11, 3.67, 4.02],
+      backgroundColor: ['#38bdf8','#34d399','#818cf8','#fb923c'],
+      borderRadius: 8, borderSkipped: false
+    }]
+  },
+  options: {
+    ...baseOpts,
+    scales: {
+      x: { grid: { display: false }, ticks: { color: TEXT_COLOR }, border: { color: 'transparent' } },
+      y: { min: 0, max: 5, grid: { color: GRID_COLOR }, ticks: { color: TEXT_COLOR }, border: { color: 'transparent' } }
+    }
+  }
+});
+
+// Core career
+hbar(document.getElementById('chart-core-career').getContext('2d'),
+  keys(D.core_career), vals(D.core_career));
+
+// CGPA vs post-grad stacked bar
+(function() {
+  const cgpas = ['6-7','7-8','8-9','9-10'];
+  const plans = ['Job/Placement','Higher Studies','Competitive Exams','Entrepreneurship','Startup'];
+  const planColors = ['#38bdf8','#818cf8','#34d399','#fb923c','#f472b6'];
+  const datasets = plans.map((p, i) => ({
+    label: p,
+    data: cgpas.map(c => D.cgpa_vs_postgrad[c]?.[p] || 0),
+    backgroundColor: planColors[i],
+    borderRadius: 4,
+    borderSkipped: false,
+  }));
+  new Chart(document.getElementById('chart-cgpa-vs-pg').getContext('2d'), {
+    type: 'bar',
+    data: { labels: cgpas, datasets },
+    options: {
+      ...baseOpts,
+      plugins: { ...baseOpts.plugins,
+        legend: { display: true, position: 'bottom', labels: { color: TEXT_COLOR, font: { size: 10 }, boxWidth: 10, padding: 8 } }
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { color: TEXT_COLOR }, border: { color: 'transparent' } },
+        y: { stacked: true, grid: { color: GRID_COLOR }, ticks: { color: TEXT_COLOR }, border: { color: 'transparent' } }
+      }
+    }
+  });
+})();
+
+// Sleep
+vbar(document.getElementById('chart-sleep').getContext('2d'),
+  keys(D.sleep), vals(D.sleep),
+  ['#f87171','#fb923c','#38bdf8','#818cf8']);
+
+// Alcohol start
+vbar(document.getElementById('chart-alc-start').getContext('2d'),
+  keys(D.alcohol_start), vals(D.alcohol_start));
+
+// Alcohol freq
+donut(document.getElementById('chart-alc-freq').getContext('2d'),
+  keys(D.alcohol_freq), vals(D.alcohol_freq));
+
+// Friendship
+hbar(document.getElementById('chart-friendship').getContext('2d'),
+  keys(D.friendship_change), vals(D.friendship_change));
+
+// Go home
+donut(document.getElementById('chart-go-home').getContext('2d'),
+  keys(D.go_home), vals(D.go_home));
+
+// Eat outside
+hbar(document.getElementById('chart-eat-outside').getContext('2d'),
+  keys(D.eat_outside), vals(D.eat_outside));
+
+// Dating apps
+donut(document.getElementById('chart-dating').getContext('2d'),
+  keys(D.dating_apps), vals(D.dating_apps));
+
+// Orientation
+donut(document.getElementById('chart-orientation').getContext('2d'),
+  keys(D.orientation), vals(D.orientation));
+
+// Infra rating
+vbar(document.getElementById('chart-infra').getContext('2d'),
+  ['1','2','3','4','5'], vals(D.infra_rating_dist),
+  ['#ef4444','#f97316','#eab308','#22c55e','#10b981']);
+
+// Satisfaction radar
+new Chart(document.getElementById('chart-radar').getContext('2d'), {
+  type: 'radar',
+  data: {
+    labels: keys(D.satisfaction_summary),
+    datasets: [{
+      data: vals(D.satisfaction_summary),
+      backgroundColor: 'rgba(56,189,248,0.15)',
+      borderColor: '#38bdf8',
+      pointBackgroundColor: '#38bdf8',
+      pointBorderColor: '#111827',
+      pointRadius: 5,
+      borderWidth: 2,
+    }]
+  },
+  options: {
+    ...baseOpts,
+    scales: {
+      r: {
+        min: 0, max: 5,
+        ticks: { color: TEXT_COLOR, backdropColor: 'transparent', stepSize: 1, font: { size: 10 } },
+        grid: { color: GRID_COLOR },
+        angleLines: { color: GRID_COLOR },
+        pointLabels: { color: TEXT_COLOR, font: { size: 11 } }
+      }
+    }
+  }
+});
+
+// Infrastructure bar list
+(function() {
+  const n = D.meta.n;
+  const labels = ['1 — Very Poor', '2 — Poor', '3 — Average', '4 — Good', '5 — Excellent'];
+  const values = vals(D.infra_rating_dist);
+  const colors = ['#ef4444','#f97316','#eab308','#22c55e','#10b981'];
+  const container = document.getElementById('infra-bar-list');
+  labels.forEach((l, i) => {
+    const pct = Math.round(values[i] / n * 100);
+    container.innerHTML += `
+      <div class="bar-item">
+        <div class="bar-label"><span>${l}</span><span>${values[i]} (${pct}%)</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${colors[i]}"></div></div>
+      </div>`;
+  });
+})();
+
+// ═══════════════ WORD CLOUD ═══════════════
+(function() {
+  const canvas = document.getElementById('wordcloud-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth || 800;
+  canvas.height = 300;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const words = Object.entries(D.one_word).sort((a,b)=>b[1]-a[1]);
+  const maxVal = words[0][1];
+  const colors = ['#38bdf8','#818cf8','#34d399','#fb923c','#f472b6','#a78bfa','#fbbf24','#60a5fa','#4ade80','#f87171'];
+  const placed = [];
+
+  function overlaps(x, y, w, h) {
+    for (const p of placed) {
+      if (x < p.x + p.w && x + w > p.x && y < p.y + p.h && y + h > p.y) return true;
+    }
+    return false;
+  }
+
+  words.forEach(([word, count], idx) => {
+    const size = Math.max(14, Math.round(14 + (count / maxVal) * 42));
+    ctx.font = `${count > 5 ? 700 : 400} ${size}px 'DM Sans', sans-serif`;
+    ctx.fillStyle = colors[idx % colors.length];
+    const metrics = ctx.measureText(word);
+    const w = metrics.width + 8;
+    const h = size + 4;
+    let placed_flag = false;
+    for (let attempt = 0; attempt < 200; attempt++) {
+      const x = Math.random() * (canvas.width - w - 10) + 5;
+      const y = Math.random() * (canvas.height - h - 10) + h;
+      if (!overlaps(x, y - h, w, h)) {
+        ctx.fillText(word, x, y);
+        placed.push({ x, y: y-h, w, h });
+        placed_flag = true;
+        break;
+      }
+    }
+  });
+})();
+
+// ═══════════════ NAV ACTIVE STATE ═══════════════
+const sections = document.querySelectorAll('.section[id]');
+const navLinks = document.querySelectorAll('nav a');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const a = document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

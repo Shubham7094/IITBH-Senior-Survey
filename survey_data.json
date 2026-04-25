@@ -1,0 +1,311 @@
+{
+  "meta": {
+    "n": 97,
+    "year": "2025-26",
+    "institute": "IIT Bhilai"
+  },
+  "dept": {
+    "Electrical Engineering": 20,
+    "Computer Science and Engineering": 20,
+    "Data Science and Artificial Intelligence": 16,
+    "Mechanical Engineering": 16,
+    "Mechatronics Engineering": 9,
+    "Chemistry": 5,
+    "Materials Science and Metallurgical Engineering": 5,
+    "Physics": 3,
+    "Mathematics": 1,
+    "Other": 1,
+    "B.Tech Electronics and Communication Engineering": 1
+  },
+  "gender": {
+    "Male": 82,
+    "Female": 15
+  },
+  "region": {
+    "Tier-2 city": 29,
+    "Tier-3 city": 21,
+    "Tier-1 city": 18,
+    "Rural area": 18,
+    "Metropolitan city": 11
+  },
+  "diet": {
+    "Vegetarian": 37,
+    "Always been a Non-vegetarian": 37,
+    "Eggetarian": 19,
+    "Became Non-veg in IIT": 4
+  },
+  "parent_edu": {
+    "Both parents graduated (college+)": 58,
+    "One parent graduated": 25,
+    "Neither parent graduated (School or below)": 10,
+    "Prefer not to say": 4
+  },
+  "cgpa_bucket": {
+    "Below 6": 2,
+    "6-7": 14,
+    "7-8": 20,
+    "8-9": 46,
+    "9-10": 15
+  },
+  "cgpa_sat_avg": 3.46,
+  "cgpa_sat_dist": {
+    "1": 8,
+    "2": 14,
+    "3": 21,
+    "4": 33,
+    "5": 21
+  },
+  "core_career": {
+    "Yes strongly": 28,
+    "Yes somewhat": 18,
+    "No probably not": 17,
+    "Yes definitely": 14,
+    "No definitely not": 12,
+    "Neutral": 5,
+    "No not really": 3
+  },
+  "class_imp_avg": 2.94,
+  "study_sched": {
+    "Mostly before exams": 67,
+    "Consistent daily study": 18,
+    "Weekend heavy": 5,
+    "Never studied": 3,
+    "Self study focused": 2,
+    "Other": 1,
+    "Group study focused": 1
+  },
+  "elective_sat_avg": 2.61,
+  "honor_code": {
+    "Yes, but didn't report it": 50,
+    "No": 27,
+    "Never": 17,
+    "Yes and reported it": 3
+  },
+  "extra_course": {
+    "No": 48,
+    "Yes - Minor": 28,
+    "Yes - Extra electives only": 10,
+    "Yes - Honors": 10,
+    "Not applicable": 1
+  },
+  "f_grades": {
+    "Not reported": 38,
+    "0": 38,
+    "1-2": 12,
+    "1": 4,
+    "Prefer not to say": 2,
+    "3+": 2,
+    "5+": 1
+  },
+  "post_grad": {
+    "Job/Placement": 59,
+    "Higher Studies": 12,
+    "Competitive Exams": 9,
+    "Entrepreneurship": 7,
+    "Not decided yet": 4,
+    "Figuring it out": 3,
+    "Startup": 2,
+    "Other": 1
+  },
+  "prepared_avg": 2.97,
+  "income_expect": {
+    "About average": 38,
+    "Yes probably": 29,
+    "Yes definitely": 15,
+    "No probably not": 13,
+    "No definitely not": 2
+  },
+  "intern_help_avg": 3.37,
+  "brand_help_avg": 3.07,
+  "imp_interest_avg": 3.87,
+  "imp_salary_avg": 4.11,
+  "imp_location_avg": 3.67,
+  "imp_culture_avg": 4.02,
+  "alcohol_start": {
+    "Never": 53,
+    "Second Year": 13,
+    "Before IIT Bh": 6,
+    "Fourth Year": 5,
+    "First Year": 5,
+    "3rd year": 4,
+    "Third Year": 3,
+    "After 3rd year": 2,
+    "2nd year": 2,
+    "1st year": 2,
+    "Before College": 2
+  },
+  "alcohol_freq": {
+    "Never": 56,
+    "Occasionally": 16,
+    "Regularly": 14,
+    "Rarely": 11
+  },
+  "smoke_start": {
+    "Never": 73,
+    "Third Year": 9,
+    "Fourth Year": 4,
+    "Before College": 3,
+    "Before joining": 2,
+    "3rd year": 2,
+    "Second Year": 2,
+    "After 3rd year": 1,
+    "First Year": 1
+  },
+  "dating_apps": {
+    "Never": 66,
+    "Rarely": 21,
+    "Occasionally": 5,
+    "Frequently": 3,
+    "Sometimes": 2
+  },
+  "relationships": {
+    "Prefer not to say": 32,
+    "0": 29,
+    "1": 13,
+    "1-2": 11,
+    "3 or more": 4,
+    "3+": 4,
+    "2": 4
+  },
+  "sleep": {
+    "Less than 5 hours": 2,
+    "5-7 hours": 46,
+    "7-8 hours": 32,
+    "More than 8 hours": 8
+  },
+  "mess_meals_avg": 15.93,
+  "eat_outside": {
+    "Ordered online": 34,
+    "Food outlets inside the campus": 20,
+    "I rarely ate outside the mess": 16,
+    "Eateries right outside campus": 16,
+    "Outlets outside the campus": 8,
+    "Other": 3
+  },
+  "go_home": {
+    "Once": 46,
+    "2-3 times": 32,
+    "Never": 10,
+    "3+": 5,
+    "Every month": 4
+  },
+  "friendship_change": {
+    "Became much stronger": 46,
+    "Stayed about the same": 23,
+    "Changed entirely": 12,
+    "Became weaker/ fewer friends": 7,
+    "Drifted apart": 6,
+    "Other": 3
+  },
+  "infra_rating_avg": 3.0,
+  "infra_rating_dist": {
+    "1": 16,
+    "2": 16,
+    "3": 28,
+    "4": 26,
+    "5": 11
+  },
+  "iitbh_awareness_avg": 1.26,
+  "family_close_avg": 3.58,
+  "roommate_close_avg": 3.07,
+  "religious_avg": 3.11,
+  "orientation": {
+    "Heterosexual": 77,
+    "Bisexual": 8,
+    "Homosexual": 7,
+    "Prefer not to say": 4,
+    "Asexual": 1
+  },
+  "one_word": {
+    "growing": 14,
+    "unpredictable": 13,
+    "challenging": 9,
+    "peaceful": 7,
+    "dynamic": 7,
+    "memories": 2,
+    "bad": 2,
+    "rollercoaster": 2,
+    "unforgettable": 2,
+    "developing": 1,
+    "shit": 1,
+    "fuck": 1,
+    "\ud83e\udd72": 1,
+    "peace": 1,
+    "newbie": 1,
+    "stamped": 1,
+    "progressive": 1,
+    "good": 1,
+    "unity.": 1,
+    "mt-aho": 1,
+    "lost all in 2 years": 1,
+    "no college vibe": 1,
+    "aao lekin ek baar soch lena": 1,
+    "at least it is an iit": 1,
+    "non-ascending": 1,
+    "\u2014\u2014": 1,
+    "bittersweet": 1,
+    "amazing": 1,
+    "okish": 1,
+    "new": 1
+  },
+  "satisfaction_summary": {
+    "CGPA": 3.46,
+    "Electives": 2.61,
+    "Prepared for Life": 2.97,
+    "Infrastructure": 3.0,
+    "IIT Brand": 3.07,
+    "Intern Helpfulness": 3.37
+  },
+  "cgpa_vs_postgrad": {
+    "Below 6": {
+      "Competitive Exams": 1,
+      "Entrepreneurship": 0,
+      "Figuring it out": 0,
+      "Higher Studies": 0,
+      "Job/Placement": 1,
+      "Not decided yet": 0,
+      "Other": 0,
+      "Startup": 0
+    },
+    "6-7": {
+      "Competitive Exams": 2,
+      "Entrepreneurship": 2,
+      "Figuring it out": 0,
+      "Higher Studies": 0,
+      "Job/Placement": 10,
+      "Not decided yet": 0,
+      "Other": 0,
+      "Startup": 0
+    },
+    "7-8": {
+      "Competitive Exams": 0,
+      "Entrepreneurship": 1,
+      "Figuring it out": 1,
+      "Higher Studies": 4,
+      "Job/Placement": 10,
+      "Not decided yet": 2,
+      "Other": 0,
+      "Startup": 2
+    },
+    "8-9": {
+      "Competitive Exams": 4,
+      "Entrepreneurship": 3,
+      "Figuring it out": 2,
+      "Higher Studies": 5,
+      "Job/Placement": 30,
+      "Not decided yet": 1,
+      "Other": 1,
+      "Startup": 0
+    },
+    "9-10": {
+      "Competitive Exams": 2,
+      "Entrepreneurship": 1,
+      "Figuring it out": 0,
+      "Higher Studies": 3,
+      "Job/Placement": 8,
+      "Not decided yet": 1,
+      "Other": 0,
+      "Startup": 0
+    }
+  }
+}
